@@ -4,5 +4,5 @@ import ParkingApp.Vehicles.Vehicle;
 
 public interface ParkingLot {
 
-    boolean validVehicle(Vehicle v);
+    boolean validVehicle(String vehicle);
 }
