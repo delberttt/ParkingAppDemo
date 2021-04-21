@@ -7,6 +7,11 @@ public class ParkingException extends Exception {
         super();
     }
 
+    public ParkingException (String errorMessage)
+    {
+        super(errorMessage);
+    }
+
     public ParkingException (String errorMessage, Throwable err)
     {
         super(errorMessage, err);
