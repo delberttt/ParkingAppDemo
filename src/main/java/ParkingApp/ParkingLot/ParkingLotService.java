@@ -1,0 +1,199 @@
+package ParkingApp.ParkingLot;
+
+import ParkingApp.ParkingException.ParkingException;
+import ParkingApp.Payment.PaymentSystem;
+import ParkingApp.Vehicles.Vehicle;
+
+import java.util.*;
+
+public class ParkingLotService implements ParkingLot {
+
+    HashMap<String, Integer> vehicleLotIndex = new HashMap<>(); // { "car":0, "motor":1, "truck":2}
+    List<int[]> lotList = new ArrayList<>(); // [ [0,0,0], [0,0], [0] ]
+
+    // track actual lot vehicle parks in
+    List<HashMap<Vehicle, Integer>> trackVehicleParkingLot = new ArrayList<HashMap<Vehicle, Integer>>();
+    // [ {"SGX1234A": 0}, {"SGF9283P": 1}, {} ]
+
+    // keeps track of all vehicles that is in lot based on license plate
+    HashMap<String, Vehicle> allVehiclesInLot = new HashMap<>();
+
+    private PaymentSystem paymentSystem;
+
+    public ParkingLotService(HashMap <String, Integer> parkingLotDefinition) throws ParkingException
+    {
+        // assume input: { car: 3, motor: 2, truck: 1}
+        // TODO: check validity of parking lot definition
+        // dynamic creation of parking lots based on type of vehicles
+        int count = 0;
+        for (String vehicleType : parkingLotDefinition.keySet())
+        {
+            vehicleLotIndex.put(vehicleType, count);
+
+            int maxLotSize = parkingLotDefinition.get(vehicleType);
+            int[] parkingSpaces = new int[maxLotSize];
+            lotList.add(parkingSpaces);
+
+            for (int i=0; i < maxLotSize; i++)
+            {
+                trackVehicleParkingLot.add(new HashMap<Vehicle, Integer>());
+            }
+
+            count++;
+        }
+    }
+
+    public void setPaymentSystem(PaymentSystem paymentSystem)
+    {
+        this.paymentSystem = paymentSystem;
+    }
+
+    public Boolean isValidVehicleType(String vehicleType)
+    {
+        if ( !vehicleType.isEmpty() && vehicleLotIndex.containsKey(vehicleType) )
+        {
+            return true;
+        }
+        return false;
+    }
+
+    public Boolean isVehicleInParkingLot(String licensePlate)
+    {
+        if ( !licensePlate.isEmpty() && allVehiclesInLot.containsKey(licensePlate) )
+        {
+                return true;
+        }
+        return false;
+    }
+
+    public void enterVehicle(Vehicle vehicle) throws ParkingException
+    {
+        if ( paymentSystem == null )
+        {
+            throw new ParkingException("Parking Lot Exception: Failed to complete parking lot operation, please set payment system.");
+        }
+
+        if ( vehicle != null)
+        {
+            String vehicleType = vehicle.getVehicleType();
+            if ( isValidVehicleType( vehicleType ) )
+            {
+                try {
+                    String vehicleLicensePlate = vehicle.getLicensePlate();
+
+                    // map vehicle to lot
+                    int vehicleIndex = vehicleLotIndex.get(vehicleType);
+                    int[] vehicleLots = lotList.get(vehicleIndex);
+                    HashMap<Vehicle, Integer> vehiclePark = trackVehicleParkingLot.get(vehicleIndex);
+                    int foundLotIndex = findAvailableLot(vehicleLots);
+
+                    if (foundLotIndex < 0) {
+                        System.out.println("Reject");
+                        //                    throw new ParkingException("Parking Lot Exception: Failed to enter vehicle into parking lot, all lots full.");
+                    }
+                    else {
+                        // insertion process
+                        insertVehicleIntoLot(vehicle, vehicleLots, vehiclePark, foundLotIndex);
+
+                        // print vehicle insertion result
+                        String printIndex = Integer.toString(foundLotIndex + 1);
+                        System.out.println("Accept " + vehicleType + "Lot" + printIndex);
+                    }
+
+
+
+                } catch (Exception e)
+                {
+                    e.printStackTrace();
+                    throw new ParkingException("Parking Lot Exception: Vehicle unable to enter parking lot.");
+                }
+            }
+        } else
+        {
+            throw new ParkingException("Parking Lot Exception: Failed to enter vehicle into parking lot, vehicle empty.");
+        }
+    }
+
+    public void exitVehicle(String vehicleLicensePlate, Long timeOut) throws ParkingException
+    {
+        if ( paymentSystem == null )
+        {
+            throw new ParkingException("Parking Lot Exception: Failed to complete parking lot operation, please set payment system.");
+        }
+
+        if ( !vehicleLicensePlate.isEmpty() && isVehicleInParkingLot(vehicleLicensePlate) && timeOut != null)
+        {
+            try {
+                // map vehicle to lot
+                Vehicle vehicle = allVehiclesInLot.get(vehicleLicensePlate);
+                String vehicleType = vehicle.getVehicleType();
+
+                int vehicleIndex = vehicleLotIndex.get(vehicleType);
+                int[] vehicleLots = lotList.get(vehicleIndex);
+                HashMap<Vehicle, Integer> vehiclePark = trackVehicleParkingLot.get(vehicleIndex);
+
+                // removal process
+                Integer removedLotIndex = removeVehicleFromLot(vehicle, vehicleLots, vehiclePark);
+
+                // charge vehicle parking fee
+                Double parkingFee = paymentSystem.chargeParkingFee(vehicleType, vehicle.getTimeIn(), timeOut);
+                System.out.println(vehicleType + "Lot" + Integer.toString(removedLotIndex+1) + " " + Double.toString(parkingFee));
+
+
+            } catch(Exception e)
+            {
+                e.printStackTrace();
+                throw new ParkingException("Parking Lot Exception: Unable to remove vehicle from parking lot, missing exit details.");
+            }
+        }
+
+    }
+
+    private Integer insertVehicleIntoLot(Vehicle vehicle, int[] vehicleLots, HashMap<Vehicle, Integer> vehiclePark, int foundLotIndex)
+    {
+        try {
+            vehicleLots[foundLotIndex] = 1;
+            vehiclePark.put(vehicle, foundLotIndex);
+            allVehiclesInLot.put(vehicle.getLicensePlate(), vehicle);
+        } catch (Exception e)
+        {
+            throw e;
+        }
+        return foundLotIndex;
+    }
+
+    private Integer removeVehicleFromLot(Vehicle vehicle, int[] vehicleLots, HashMap<Vehicle, Integer> vehiclePark)
+    {
+        try {
+            // unmark from vehicle lots
+            int parkedLotIndex = vehiclePark.get(vehicle);
+            vehicleLots[parkedLotIndex] = 0;
+
+            // remove from vehicle park
+            vehiclePark.remove(vehicle);
+
+            // remove from vehicle license tracking
+            allVehiclesInLot.remove(vehicle.getLicensePlate());
+
+            return parkedLotIndex;
+        } catch (Exception e)
+        {
+            throw e;
+        }
+
+    }
+
+    //algorithm to find lowest index with 0
+    private int findAvailableLot(int[] vehicleLot)
+    {
+        for (int i=0; i < vehicleLot.length; i++)
+        {
+            if ( vehicleLot[i] == 0)
+            {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+}
