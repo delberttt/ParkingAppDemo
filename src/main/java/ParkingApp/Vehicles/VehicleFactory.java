@@ -9,10 +9,10 @@ public class VehicleFactory {
 
     }
 
-    public Vehicle createVehicle(String vehicleType, String licensePlate) throws ParkingException
+    public Vehicle createVehicle(String vehicleType, String licensePlate, Long timeIn) throws ParkingException
     {
 
-        if ( vehicleType.isEmpty() || licensePlate.isEmpty())
+        if ( vehicleType.isEmpty() || licensePlate.isEmpty() || timeIn == null)
         {
             throw new ParkingException("Vehicle Exception: Failed to create vehicle, vehicle detail missing.");
         }
@@ -20,10 +20,10 @@ public class VehicleFactory {
         switch(vehicleType)
         {
             case "car":
-                return  new Car(vehicleType, licensePlate);
+                return  new Car(vehicleType, licensePlate, timeIn);
 
             case "motorcycle":
-                return new MotorCycle(vehicleType, licensePlate);
+                return new MotorCycle(vehicleType, licensePlate, timeIn);
 
             default:
                 throw new ParkingException("Vehicle Exception: Failed to create vehicle.");

@@ -4,11 +4,13 @@ public abstract class Vehicle {
 
     private String licensePlate;
     private String vehicleType;
+    private Long timeIn;
 
-    public Vehicle(String vehicleType, String licensePlate)
+    public Vehicle(String vehicleType, String licensePlate, Long timeIn)
     {
         this.licensePlate = licensePlate;
         this.vehicleType = vehicleType;
+        this.timeIn = timeIn;
     }
 
     public String getLicensePlate()
@@ -16,17 +18,13 @@ public abstract class Vehicle {
         return licensePlate;
     }
 
-    public void setLicensePlate(String licensePlate)
-    {
-        this.licensePlate = licensePlate;
-    }
-
     public String getVehicleType() {
         return vehicleType;
     }
 
-    public void setVehicleType(String vehicleType) {
-        this.vehicleType = vehicleType;
+    public Long getTimeIn() {
+        return timeIn;
     }
+
 
 }
