@@ -6,13 +6,13 @@ import ParkingApp.Vehicles.Vehicle;
 public interface PaymentSystem {
 
 
-    double chargeParkingFee(String vehicleType, long timeIn, long timeOut) throws ParkingException;
+    Double chargeParkingFee(String vehicleType, Long timeIn, Long timeOut) throws ParkingException;
 
-    boolean registerVehicleFee(String vehicleType, double feePerHour) throws ParkingException;
+    Boolean registerVehicleFee(String vehicleType, Double feePerHour) throws ParkingException;
 
-    boolean updateVehicleFee(String vehicleType, double feePerHour) throws ParkingException;
+    Boolean updateVehicleFee(String vehicleType, Double feePerHour) throws ParkingException;
 
-    boolean deregisterVehicleFee(String vehicleType) throws ParkingException;
+    Boolean deregisterVehicleFee(String vehicleType) throws ParkingException;
 
-    double checkVehicleParkingFee(String vehicleType) throws ParkingException;
+    Double checkVehicleParkingFee(String vehicleType) throws ParkingException;
 }
