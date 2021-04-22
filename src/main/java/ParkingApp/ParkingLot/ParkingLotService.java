@@ -43,12 +43,30 @@ public class ParkingLotService implements ParkingLot {
         }
     }
 
+    // alternative constructor
+    public ParkingLotService(HashMap<String, Integer> vehicleLotIndex, List<int[]> lotList, List<HashMap<Vehicle, Integer>> trackVehicleParkingLot, HashMap<String, Vehicle> allVehiclesInLot) throws ParkingException
+    {
+        if (vehicleLotIndex != null && lotList != null && trackVehicleParkingLot != null && allVehiclesInLot != null)
+        {
+            this.vehicleLotIndex = vehicleLotIndex;
+            this.lotList = lotList;
+            this.trackVehicleParkingLot = trackVehicleParkingLot;
+            this.allVehiclesInLot = allVehiclesInLot;
+        } else
+        {
+            throw new ParkingException("Parking Lot Exception: Not able to initialize parking lot, missing details.");
+        }
+
+    }
+
+
+
     public void setPaymentSystem(PaymentSystem paymentSystem)
     {
         this.paymentSystem = paymentSystem;
     }
 
-    public Boolean isValidVehicleType(String vehicleType)
+    public boolean isValidVehicleType(String vehicleType)
     {
         if ( !vehicleType.isEmpty() && vehicleLotIndex.containsKey(vehicleType) )
         {
@@ -57,7 +75,7 @@ public class ParkingLotService implements ParkingLot {
         return false;
     }
 
-    public Boolean isVehicleInParkingLot(String licensePlate)
+    public boolean isVehicleInParkingLot(String licensePlate)
     {
         if ( !licensePlate.isEmpty() && allVehiclesInLot.containsKey(licensePlate) )
         {
@@ -123,9 +141,16 @@ public class ParkingLotService implements ParkingLot {
 
         if ( !vehicleLicensePlate.isEmpty() && isVehicleInParkingLot(vehicleLicensePlate) && timeOut != null)
         {
+
             try {
                 // map vehicle to lot
                 Vehicle vehicle = allVehiclesInLot.get(vehicleLicensePlate);
+
+                if (vehicle.getTimeIn() > timeOut)
+                {
+                    throw new ParkingException("Parking Lot Exception: Failed to complete parking lot operation, invalid time out set.");
+                }
+
                 String vehicleType = vehicle.getVehicleType();
 
                 int vehicleIndex = vehicleLotIndex.get(vehicleType);
@@ -143,13 +168,13 @@ public class ParkingLotService implements ParkingLot {
             } catch(Exception e)
             {
                 e.printStackTrace();
-                throw new ParkingException("Parking Lot Exception: Unable to remove vehicle from parking lot, missing exit details.");
+                throw new ParkingException("Parking Lot Exception: Unable to remove vehicle from parking lot, missing or invalid exit details.");
             }
         }
 
     }
 
-    private Integer insertVehicleIntoLot(Vehicle vehicle, int[] vehicleLots, HashMap<Vehicle, Integer> vehiclePark, int foundLotIndex)
+    private int insertVehicleIntoLot(Vehicle vehicle, int[] vehicleLots, HashMap<Vehicle, Integer> vehiclePark, int foundLotIndex)
     {
         try {
             vehicleLots[foundLotIndex] = 1;
@@ -162,7 +187,7 @@ public class ParkingLotService implements ParkingLot {
         return foundLotIndex;
     }
 
-    private Integer removeVehicleFromLot(Vehicle vehicle, int[] vehicleLots, HashMap<Vehicle, Integer> vehiclePark)
+    private int removeVehicleFromLot(Vehicle vehicle, int[] vehicleLots, HashMap<Vehicle, Integer> vehiclePark)
     {
         try {
             // unmark from vehicle lots
