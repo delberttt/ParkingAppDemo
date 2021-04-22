@@ -9,7 +9,8 @@ such as adding new vehicle types will be easier in the future. For example, the 
 lots.
 * Hourly fees, Motorcycles: $1/hour, Car: $2/hour. These hourly fees are hard coded into the application. As such, changes in the code is needed to adjust the hourly fees.
 * There are no guidelines on the vehicle number/license plate of the vehicles. It is assumed that it's a unique String identifier between vehicles.
-* Text file inputs are in the given format as given in the Data Description segment of the problem sheet. Examples can be seen below. 
+* Text file inputs are in the given format as given in the Data Description segment of the problem sheet. Examples can be seen below. Text file also represents a finite 
+sequence of events such that a total revenue can be calculated in the end.
 
 Prerequisites
 ---
@@ -90,8 +91,7 @@ This project is managed by Maven. This repository contains a pom.xml file that i
 Unit tests can be found in the ./src/test/java folder. The test cases uses Junit5 as a testing framework. This readme doesn't cover the setup to run the unit tests as this
 requires further setting up for Maven and dependency handling. This project could be exported into an IDE such as IntelliJ Idea.
 
-
-## Future Work
+Future Work
 ---
 The architecture of this program is designed in a way that is extendable for future use cases. The use of OOP concepts such as inheritance and design patterns are used to
 allow extensibnility for future use cases. For example, the Factory pattern is used in creating Vehicles that can be extended to be more than 2 types. The implementation of 
