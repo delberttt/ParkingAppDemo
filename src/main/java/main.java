@@ -8,9 +8,18 @@ public class main {
 
     public static void main(String[] args) {
 
-        File parkingInputFile = new File("parkingApp_test.txt");
+        String fileName = args[0];
+        if (fileName !=  null)
+        {
+            File parkingInputFile = new File(fileName);
 
-        ParkingSystem parkingSystem = new ParkingSystem(parkingInputFile);
+            ParkingSystem parkingSystem = new ParkingSystem(parkingInputFile);
+        }
+        else
+        {
+            System.out.println("Input file not provided.");
+        }
+
     }
 
 
