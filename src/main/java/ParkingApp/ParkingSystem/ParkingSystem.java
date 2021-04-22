@@ -1,5 +1,6 @@
 package ParkingApp.ParkingSystem;
 
+import ParkingApp.ParkingException.ParkingException;
 import ParkingApp.ParkingLot.CarAndMotorParkingLotServiceImpl;
 import ParkingApp.ParkingLot.ParkingLot;
 import ParkingApp.ParkingLot.ParkingLotService;
@@ -11,6 +12,7 @@ import ParkingApp.Vehicles.VehicleFactory;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.lang.reflect.Array;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Scanner;
@@ -53,7 +55,7 @@ public class ParkingSystem {
                 String parkingOperation = scanner.nextLine();
 
                 String[] vehicleEvent = parkingOperation.split(" ");
-
+//                System.out.println(Arrays.toString(vehicleEvent));
                 String operation = vehicleEvent[0];
                 if ( isValidOperation(operation) )
                 {
@@ -74,6 +76,10 @@ public class ParkingSystem {
 
                         parkingLot.exitVehicle(vehicleLicensePlate, timeOut);
                     }
+                }
+                else
+                {
+                    throw new ParkingException("Parking Lot Exception: Invalid operation on parking lot.");
                 }
             }
             System.out.println("Total revenue collected: " + Double.toString(paymentSystem.getTotalRevenue()));

@@ -121,11 +121,11 @@ public abstract class ParkingLotService implements ParkingLot {
         if ( vehicle != null)
         {
             String vehicleType = vehicle.getVehicleType();
-            if ( isValidVehicleType( vehicleType ) )
+            String vehicleLicensePlate = vehicle.getLicensePlate();
+
+            if ( isValidVehicleType( vehicleType ) && !isVehicleInParkingLot(vehicleLicensePlate) )
             {
                 try {
-                    String vehicleLicensePlate = vehicle.getLicensePlate();
-
                     // map vehicle to index
                     int vehicleIndex = vehicleLotIndex.get(vehicleType);
 
@@ -155,6 +155,10 @@ public abstract class ParkingLotService implements ParkingLot {
                     throw new ParkingException("Parking Lot Exception: Vehicle unable to enter parking lot.");
                 }
             }
+            else
+            {
+                throw new ParkingException("Parking Lot Exception: Failed to enter vehicle into parking lot, invalid vehicle type or licensePlate.");
+            }
         } else
         {
             throw new ParkingException("Parking Lot Exception: Failed to enter vehicle into parking lot, vehicle empty.");
@@ -177,7 +181,7 @@ public abstract class ParkingLotService implements ParkingLot {
 
                 if (vehicle.getTimeIn() > timeOut)
                 {
-                    throw new ParkingException("Parking Lot Exception: Failed to complete parking lot operation, invalid time out set.");
+                    throw new ParkingException("Parking Lot Exception: Failed to complete parking lot operation, invalid exit time set.");
                 }
 
                 String vehicleType = vehicle.getVehicleType();
@@ -203,6 +207,9 @@ public abstract class ParkingLotService implements ParkingLot {
                 e.printStackTrace();
                 throw new ParkingException("Parking Lot Exception: Unable to remove vehicle from parking lot, missing or invalid exit details.");
             }
+        }
+        else {
+            throw new ParkingException("Parking Lot Exception: Unable to remove vehicle from parking lot, invalid vehicle details or vehicle not in lot.");
         }
     }
 
