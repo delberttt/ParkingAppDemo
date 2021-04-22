@@ -13,7 +13,7 @@ lots.
 
 Prerequisites
 ---
-This project runs on Java SDK 1.8.0_282. If you do not have this Java version installed on your machine, follow these steps to set up your machine.
+This project runs on Java SDK 1.8.0_282. If you do not have this Java SDK version installed on your machine, follow these steps to set up your machine.
 
 1. Update your main repository:
 ```
@@ -83,7 +83,7 @@ java main parkingApp_test.txt
 This program only takes in one input text file at a time.
 
 
-Project Architecture
+Project Structure
 --
 This project is managed by Maven. This repository contains a pom.xml file that is used by Maven to manage dependencies such as for unit testing. 
 
@@ -94,6 +94,7 @@ requires further setting up for Maven and dependency handling. This project coul
 ## Future Work
 ---
 The architecture of this program is designed in a way that is extendable for future use cases. The use of OOP concepts such as inheritance and design patterns are used to
-For example, the Factory pattern is used in 
+allow extensibnility for future use cases. For example, the Factory pattern is used in creating Vehicles that can be extended to be more than 2 types. The implementation of 
+the parking lot and payment service also allows for further customisation of each type of car park or payment service.
 
 
