@@ -8,7 +8,7 @@ public class main {
 
     public static void main(String[] args) {
 
-        if (args != null)
+        try
         {
             String fileName = args[0];
             if (fileName !=  null)
@@ -16,12 +16,18 @@ public class main {
                 File parkingInputFile = new File(fileName);
 
                 ParkingSystem parkingSystem = new ParkingSystem(parkingInputFile);
+            } else {
+                System.out.println("Input file not valid.");
             }
-        }
-        else
+
+        } catch (Exception e)
         {
-            System.out.println("Input file not provided.");
+            System.out.println("Please provide input file.");
         }
+
+
+
+
 
     }
 
