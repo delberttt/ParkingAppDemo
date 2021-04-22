@@ -8,12 +8,15 @@ public class main {
 
     public static void main(String[] args) {
 
-        String fileName = args[0];
-        if (fileName !=  null)
+        if (args != null)
         {
-            File parkingInputFile = new File(fileName);
+            String fileName = args[0];
+            if (fileName !=  null)
+            {
+                File parkingInputFile = new File(fileName);
 
-            ParkingSystem parkingSystem = new ParkingSystem(parkingInputFile);
+                ParkingSystem parkingSystem = new ParkingSystem(parkingInputFile);
+            }
         }
         else
         {

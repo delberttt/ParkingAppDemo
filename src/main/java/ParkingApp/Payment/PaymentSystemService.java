@@ -113,7 +113,7 @@ public abstract class PaymentSystemService implements PaymentSystem {
     {
         double parkingDurationSeconds = timeOut - timeIn;
         double parkingDurationHours = Math.ceil( parkingDurationSeconds / 3600 );   // ROUND UP to nearest hour
-        System.out.println("parking duration: " + Double.toString(parkingDurationSeconds));
+
         return feePerHour * parkingDurationHours;
     }
 
