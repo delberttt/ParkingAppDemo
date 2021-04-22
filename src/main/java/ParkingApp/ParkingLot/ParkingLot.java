@@ -5,9 +5,9 @@ import ParkingApp.Vehicles.Vehicle;
 
 public interface ParkingLot {
 
-    Boolean isValidVehicleType(String vehicleType);
+    boolean isValidVehicleType(String vehicleType);
 
-    Boolean isVehicleInParkingLot(String licensePlate);
+    boolean isVehicleInParkingLot(String licensePlate);
 
     void enterVehicle(Vehicle vehicle) throws ParkingException;
 

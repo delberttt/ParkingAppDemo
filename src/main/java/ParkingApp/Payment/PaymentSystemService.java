@@ -50,7 +50,7 @@ public abstract class PaymentSystemService implements PaymentSystem {
         return vehiclePaymentMap;
     }
 
-    public Boolean registerVehicleFee(String vehicleType, Double feePerHour) throws ParkingException
+    public boolean registerVehicleFee(String vehicleType, Double feePerHour) throws ParkingException
     {
         if ( parkingLot.isValidVehicleType(vehicleType) && feePerHour >= 0 )
         {
@@ -62,19 +62,7 @@ public abstract class PaymentSystemService implements PaymentSystem {
         return true;
     }
 
-    public Boolean updateVehicleFee(String vehicleType, Double feePerHour) throws ParkingException
-    {
-        if ( parkingLot.isValidVehicleType(vehicleType) && vehiclePaymentMap.containsKey(vehicleType) && feePerHour >= 0 )
-        {
-            vehiclePaymentMap.put(vehicleType, feePerHour);
-        } else
-        {
-            throw new ParkingException("Parking Payment Exception: Failed to update vehicle fee.");
-        }
-        return true;
-    }
-
-    public Boolean deregisterVehicleFee(String vehicleType) throws ParkingException
+    public boolean deregisterVehicleFee(String vehicleType) throws ParkingException
     {
         if ( parkingLot.isValidVehicleType(vehicleType) && vehiclePaymentMap.containsKey(vehicleType) )
         {
@@ -86,7 +74,7 @@ public abstract class PaymentSystemService implements PaymentSystem {
         return true;
     }
 
-    public Double checkVehicleParkingFee(String vehicleType) throws ParkingException
+    public double checkVehicleParkingFee(String vehicleType) throws ParkingException
     {
         if ( vehiclePaymentMap.containsKey(vehicleType) )
         {
@@ -98,7 +86,7 @@ public abstract class PaymentSystemService implements PaymentSystem {
         }
     }
 
-    public Double chargeParkingFee(String vehicleType, Long timeIn, Long timeOut) throws ParkingException
+    public double chargeParkingFee(String vehicleType, Long timeIn, Long timeOut) throws ParkingException
     {
         if ( parkingLot.isValidVehicleType(vehicleType) && vehiclePaymentMap.containsKey(vehicleType) )
         {
@@ -120,7 +108,7 @@ public abstract class PaymentSystemService implements PaymentSystem {
         }
     }
 
-    private Double calculateParkingFee(double feePerHour, long timeIn, long timeOut)
+    private double calculateParkingFee(double feePerHour, long timeIn, long timeOut)
     {
         double parkingDurationSeconds = timeOut - timeIn;
         double parkingDurationHours = Math.ceil( parkingDurationSeconds / 3600 );

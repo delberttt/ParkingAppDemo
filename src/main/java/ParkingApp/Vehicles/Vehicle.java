@@ -4,7 +4,7 @@ public abstract class Vehicle {
 
     private String licensePlate;
     private String vehicleType;
-    private Long timeIn;
+    private long timeIn;
 
     public Vehicle(String vehicleType, String licensePlate, Long timeIn)
     {
@@ -22,7 +22,7 @@ public abstract class Vehicle {
         return vehicleType;
     }
 
-    public Long getTimeIn() {
+    public long getTimeIn() {
         return timeIn;
     }
 
