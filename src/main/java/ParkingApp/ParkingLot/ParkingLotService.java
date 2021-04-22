@@ -8,17 +8,33 @@ import java.util.*;
 
 public class ParkingLotService implements ParkingLot {
 
-    HashMap<String, Integer> vehicleLotIndex = new HashMap<>(); // { "car":0, "motor":1, "truck":2}
-    List<int[]> lotList = new ArrayList<>(); // [ [0,0,0], [0,0], [0] ]
+    private HashMap<String, Integer> vehicleLotIndex = new HashMap<>(); // { "car":0, "motor":1, "truck":2}
+    private List<int[]> lotList = new ArrayList<>(); // [ [0,0,0], [0,0], [0] ]
 
     // track actual lot vehicle parks in
-    List<HashMap<Vehicle, Integer>> trackVehicleParkingLot = new ArrayList<HashMap<Vehicle, Integer>>();
+    private List<HashMap<Vehicle, Integer>> trackVehicleParkingLot = new ArrayList<HashMap<Vehicle, Integer>>();
     // [ {"SGX1234A": 0}, {"SGF9283P": 1}, {} ]
 
     // keeps track of all vehicles that is in lot based on license plate
-    HashMap<String, Vehicle> allVehiclesInLot = new HashMap<>();
+    private HashMap<String, Vehicle> allVehiclesInLot = new HashMap<>();
 
     private PaymentSystem paymentSystem;
+
+    public HashMap<String, Integer> getVehicleLotIndex() {
+        return vehicleLotIndex;
+    }
+
+    public List<int[]> getLotList() {
+        return lotList;
+    }
+
+    public List<HashMap<Vehicle, Integer>> getTrackVehicleParkingLot() {
+        return trackVehicleParkingLot;
+    }
+
+    public HashMap<String, Vehicle> getAllVehiclesInLot() {
+        return allVehiclesInLot;
+    }
 
     public ParkingLotService(HashMap <String, Integer> parkingLotDefinition) throws ParkingException
     {
