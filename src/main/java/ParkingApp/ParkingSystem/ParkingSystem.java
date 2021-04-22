@@ -15,6 +15,10 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Scanner;
 
+/**
+ * Parking System class that parses input file, initializes Parking Lot Objects and translates into events for the parking lot.
+ * Inputs of vehicle types car, motorcycle and their respective fees per hour are hardcoded here.
+ */
 public class ParkingSystem {
 
     public ParkingSystem(File parkingInputFile)
@@ -27,30 +31,29 @@ public class ParkingSystem {
             String vehicleDefinition = scanner.nextLine();
             String[] noOfVehicleLots = vehicleDefinition.split(" ");
 
-            // hard coded vehicle type input here
+            // hard coded vehicle type input here (Parking Lot Definition)
             HashMap<String, Integer> carAndMotorInput = new HashMap<>();
             carAndMotorInput.put( "car", Integer.parseInt(noOfVehicleLots[0]) );
             carAndMotorInput.put( "motorcycle", Integer.parseInt(noOfVehicleLots[1]) );
-
-//            System.out.println(carAndMotorInput.keySet().toString());
 
             // initialize objects
             ParkingLotService parkingLot = new CarAndMotorParkingLotServiceImpl(carAndMotorInput);
             PaymentSystemService paymentSystem = new CarAndMotorPaymentSystemServiceImpl(parkingLot);
             VehicleFactory vehicleFactory = new VehicleFactory();
+
             // set payment Fees
-            paymentSystem.registerVehicleFee("motorcycle", 1.5);
-            paymentSystem.registerVehicleFee("car", 2.5);
+            paymentSystem.registerVehicleFee("motorcycle", 1.0);
+            paymentSystem.registerVehicleFee("car", 2.0);
 
             // set payment system for parking lot
             parkingLot.setPaymentSystem(paymentSystem);
 
+            // parse file inputs into events
             while (scanner.hasNextLine()) {
                 String parkingOperation = scanner.nextLine();
-//                System.out.println("parkingOperation");
-//                System.out.println(parkingOperation);
+
                 String[] vehicleEvent = parkingOperation.split(" ");
-//                System.out.println(Arrays.toString(vehicleEvent));
+
                 String operation = vehicleEvent[0];
                 if ( isValidOperation(operation) )
                 {
@@ -72,9 +75,6 @@ public class ParkingSystem {
                         parkingLot.exitVehicle(vehicleLicensePlate, timeOut);
                     }
                 }
-
-
-
             }
             System.out.println("Total revenue collected: " + Double.toString(paymentSystem.getTotalRevenue()));
             scanner.close();
