@@ -1,6 +1,7 @@
 package PaymentTest;
 
 import ParkingApp.ParkingException.ParkingException;
+import ParkingApp.ParkingLot.CarAndMotorParkingLotServiceImpl;
 import ParkingApp.ParkingLot.ParkingLotService;
 import ParkingApp.Payment.CarAndMotorPaymentSystemServiceImpl;
 import ParkingApp.Payment.PaymentSystem;
@@ -27,7 +28,7 @@ public class PaymentSystemTest {
         carAndMotorInput.put( "car", 3 );
         carAndMotorInput.put( "motorcycle", 4 );
 
-        parkingLotService = new ParkingLotService(carAndMotorInput);
+        parkingLotService = new CarAndMotorParkingLotServiceImpl(carAndMotorInput);
 
         // init payment system
         paymentSystem = new CarAndMotorPaymentSystemServiceImpl(parkingLotService);

@@ -1,5 +1,8 @@
 package ParkingApp.ParkingException;
 
+/**
+ * Implementation of Exception for Parking Application.
+ */
 public class ParkingException extends Exception {
 
     public ParkingException()
