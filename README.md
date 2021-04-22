@@ -1,5 +1,5 @@
 # ParkingAppDemo
-This repository contains the submission for the Zendesk Backend Exercise. The task is to design automated valet car parking system where you manage a parking space
+This repository contains the submission for the Valet Parking System Backend Exercise. The task is to design automated valet car parking system where you manage a parking space
 for vehicles as they enter/exit it and manage its revenue.
 
 Assumptions:
